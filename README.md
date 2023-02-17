@@ -1,2 +1,2 @@
 # ComputerGraphicsLabs
-My BSU labs in Computer Graphics
+Мои лабораторные работы в БГУ по дисциплине "Компьютерная графика"
