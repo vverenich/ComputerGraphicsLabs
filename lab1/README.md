@@ -27,4 +27,4 @@ https://github.com/vverenich/ComputerGraphicsLabs/releases/tag/lab1
 Автоматический пересчет цвета во всех моделях при изменении любой из
 координат: 20 баллов.
 ## Вариант
-RGB ↔ HSV ↔ LAB
+4) RGB ↔ HSV ↔ LAB
