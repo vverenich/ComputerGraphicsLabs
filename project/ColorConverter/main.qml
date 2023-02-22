@@ -13,12 +13,12 @@ Window {
     property int textPixelSize: 17
     property color textColor: "#ffffff"
 
-    width: 600
-    height: 800
-    minimumWidth: 600
-    minimumHeight: 800
-    x: 100
-    y: 100
+    width: 800
+    height: 980
+    minimumWidth: 800
+    minimumHeight: 980
+    x: 50
+    y: 50
     visible: true
     title: qsTr("Color converter")
     color: "#333333"
@@ -46,12 +46,14 @@ Window {
     }
 
     GroupBox {
-        id: groupBoxColorSliders
-        x: 67
-        y: 313
-        width: 499
+        id: groupBoxSlidersRGB
+        y: 281
         height: 211
-        title: qsTr("Color sliders")
+        anchors.left: parent.left
+        anchors.right: groupBoxRGB.left
+        anchors.leftMargin: 30
+        anchors.rightMargin: 30
+        title: qsTr("Color sliders RGB")
 
         GridLayout {
             id: gridLayoutColorSliders
@@ -130,19 +132,23 @@ Window {
     Rectangle {
         id: rectangleResult
 
-        x: 67
-        y: 59
         width: 200
         height: 200
         color: view.rectangleColor
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.leftMargin: 30
+        anchors.topMargin: 30
     }
 
     GroupBox {
         id: groupBoxRGB
-        x: 67
-        y: 547
+        x: 578
+        y: 281
         width: 120
-        height: 210
+        height: 211
+        anchors.right: parent.right
+        anchors.rightMargin: 30
         title: qsTr("RGB")
 
         GridLayout {
@@ -260,10 +266,12 @@ Window {
 
     GroupBox {
         id: groupBoxHSV
-        x: 224
-        y: 547
+        x: 578
+        y: 512
         width: 196
         height: 210
+        anchors.right: parent.right
+        anchors.rightMargin: 30
         title: qsTr("HSV")
         GridLayout {
             id: gridLayoutHSV
@@ -401,10 +409,14 @@ Window {
 
     GroupBox {
         id: groupBoxLAB
-        x: 470
-        y: 547
+        x: 578
+        y: 740
         width: 96
         height: 210
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 30
+        anchors.rightMargin: 30
         title: qsTr("LAB")
         GridLayout {
             id: gridLayoutLAB
@@ -462,16 +474,16 @@ Window {
                     top: 128
                 }
                 onEditingFinished: {
-                        if (Number(textFieldA.text) > realMaxValue) {
-                            textFieldA.text = realMaxValue
-                        }
-
-                        if (Number(textFieldA.text) < realMinValue) {
-                            textFieldA.text = realMinValue
-                        }
-
-                        view.setTextFieldAValue(Number(textFieldL.text), Number(textFieldA.text), Number(textFieldB.text))
+                    if (Number(textFieldA.text) > realMaxValue) {
+                        textFieldA.text = realMaxValue
                     }
+
+                    if (Number(textFieldA.text) < realMinValue) {
+                        textFieldA.text = realMinValue
+                    }
+
+                    view.setTextFieldAValue(Number(textFieldL.text), Number(textFieldA.text), Number(textFieldB.text))
+                }
                 Layout.preferredWidth: 53
                 Layout.preferredHeight: 40
                 placeholderText: qsTr("0")
@@ -498,12 +510,12 @@ Window {
                     top: 999
                 }
                 onEditingFinished: {
-                        if (Number(textFieldB.text) > realMaxValue) {
-                            textFieldB.text = realMaxValue
-                        }
-
-                        view.setTextFieldBValue(Number(textFieldL.text), Number(textFieldA.text), Number(textFieldB.text))
+                    if (Number(textFieldB.text) > realMaxValue) {
+                        textFieldB.text = realMaxValue
                     }
+
+                    view.setTextFieldBValue(Number(textFieldL.text), Number(textFieldA.text), Number(textFieldB.text))
+                }
                 Layout.preferredWidth: 53
                 Layout.preferredHeight: 40
                 placeholderText: qsTr("0")
@@ -518,17 +530,185 @@ Window {
         id: buttonPalette
 
         x: 466
-        y: 59
         text: qsTr("Palette")
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.rightMargin: 30
+        anchors.topMargin: 30
 
         onClicked: {
             colorDialog.visible = true
         }
     }
+
+    GroupBox {
+        id: groupBoxSlidersHSV
+        y: 511
+        height: 211
+        anchors.left: parent.left
+        anchors.right: groupBoxHSV.left
+        anchors.rightMargin: 30
+        anchors.leftMargin: 30
+        GridLayout {
+            id: gridLayoutSlidersHSV
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.topMargin: 0
+            columns: 2
+            Label {
+                id: labelHue
+                color: applicationWindow.textColor
+                text: qsTr("Hue")
+                font.pixelSize: applicationWindow.textPixelSize
+            }
+
+            CustomSlider {
+                id: customSliderHue
+
+                slider.value: view.textFieldHueValue
+                slider.from: 0
+                slider.to: 360
+                textColor: applicationWindow.textColor
+                slider.onValueChanged: {
+                    view.setTextFieldHueValue(customSliderHue.slider.value, customSliderSaturation.slider.value, customSliderValue.slider.value)
+                }
+                textPixelSize: applicationWindow.textPixelSize
+            }
+
+            Label {
+                id: labelSaturation
+                color: applicationWindow.textColor
+                text: qsTr("Saturation")
+                font.pixelSize: applicationWindow.textPixelSize
+            }
+
+            CustomSlider {
+                id: customSliderSaturation
+
+                slider.value: view.textFieldSaturationValue
+                slider.from: 0
+                slider.to: 100
+                textColor: applicationWindow.textColor
+                slider.onValueChanged: {
+                    view.setTextFieldSaturationValue(customSliderHue.slider.value, customSliderSaturation.slider.value, customSliderValue.slider.value)
+                }
+                textPixelSize: applicationWindow.textPixelSize
+            }
+
+            Label {
+                id: labelValue
+                color: applicationWindow.textColor
+                text: qsTr("Value")
+                font.pixelSize: applicationWindow.textPixelSize
+            }
+
+            CustomSlider {
+                id: customSliderValue
+
+                slider.value: view.textFieldValueValue
+                slider.from: 0
+                slider.to: 100
+                textColor: applicationWindow.textColor
+                slider.onValueChanged: {
+                    view.setTextFieldValueValue(customSliderHue.slider.value, customSliderSaturation.slider.value, customSliderValue.slider.value)
+                }
+                textPixelSize: applicationWindow.textPixelSize
+            }
+            anchors.leftMargin: 0
+            rows: 3
+        }
+        title: qsTr("Color sliders HSV")
+    }
+
+    GroupBox {
+        id: groupBoxSlidersLAB
+        y: 739
+        height: 211
+        anchors.left: parent.left
+        anchors.right: groupBoxLAB.left
+        anchors.bottom: parent.bottom
+        anchors.rightMargin: 30
+        anchors.bottomMargin: 30
+        anchors.leftMargin: 30
+        GridLayout {
+            id: gridLayoutSlidersLAB
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.topMargin: 0
+            columns: 2
+            Label {
+                id: labelL
+                color: applicationWindow.textColor
+                text: qsTr("L")
+                font.pixelSize: applicationWindow.textPixelSize
+            }
+
+            CustomSlider {
+                id: customSliderL
+
+                slider.value: view.textFieldLValue
+                slider.from: 0
+                slider.to: 100
+                textColor: applicationWindow.textColor
+                slider.onValueChanged: {
+                        view.setTextFieldLValue(customSliderL.slider.value, customSliderA.slider.value, customSliderB.slider.value)
+                    }
+                textPixelSize: applicationWindow.textPixelSize
+            }
+
+            Label {
+                id: labelA
+                color: applicationWindow.textColor
+                text: qsTr("A")
+                font.pixelSize: applicationWindow.textPixelSize
+            }
+
+            CustomSlider {
+                id: customSliderA
+
+                slider.value: view.textFieldAValue
+                slider.from: -128
+                slider.to: 128
+                textColor: applicationWindow.textColor
+                slider.onValueChanged: {
+                        view.setTextFieldAValue(customSliderL.slider.value, customSliderA.slider.value, customSliderB.slider.value)
+                    }
+                textPixelSize: applicationWindow.textPixelSize
+            }
+
+            Label {
+                id: labelBlue2
+
+                color: applicationWindow.textColor
+                text: qsTr("B")
+                font.pixelSize: applicationWindow.textPixelSize
+            }
+
+            CustomSlider {
+                id: customSliderB
+
+                slider.value: view.textFieldBValue
+                slider.from: 0
+                slider.to: 255
+                textColor: applicationWindow.textColor
+                slider.onValueChanged: {
+                        view.setTextFieldBValue(customSliderL.slider.value, customSliderA.slider.value, customSliderB.slider.value)
+                    }
+                textPixelSize: applicationWindow.textPixelSize
+            }
+            anchors.leftMargin: 0
+            rows: 3
+        }
+        title: qsTr("Color sliders LAB")
+    }
 }
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.75}
+    D{i:0;formeditorZoom:0.75}D{i:3}D{i:11}D{i:48}D{i:49}D{i:57}
 }
 ##^##*/
