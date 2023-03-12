@@ -1,5 +1,5 @@
 ## Ссылка на архив с приложением
-https://github.com/vverenich/ComputerGraphicsLabs/releases/tag/lab1
+https://github.com/vverenich/ComputerGraphicsLabs/releases/tag/lab1_v2
 ## Задача
 Изучить цветовые модели: RGB, CMYK, HSV, HLS, XYZ, LAB, переход от одной
 модели к другой, исследовать цветовой график МКО.
